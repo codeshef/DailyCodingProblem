@@ -6,4 +6,59 @@ Follow-up: what if you can't use division?
 
 
 sol. 
+
+Algorithm:
+1) Construct a temporary array left[] such that left[i] contains product of all elements on left of arr[i] excluding arr[i].
+2) Construct another temporary array right[] such that right[i] contains product of all elements on on right of arr[i] excluding arr[i].
+3) To get prod[], multiply left[] and right[].
+
+def productPuzzle(arr,n):
+    
+    left=[0]*n
+    right=[0]*n
+    
+    prod=[0]*n
+    left[0]=1
+    right[n-1]=1
+    for i in range(1,n):
+        left[i]=arr[i-1]*left[i-1]
+        
+    for j in range(n-2,-1,-1):
+        right[j]=arr[j+1]*right[j+1]
+    
+    for i in range(n):
+        prod[i]=left[i]*right[i]
+        
+    for i in range(n):  
+        print(prod[i], end =' ')  
+        
+a = [1, 2, 3, 4, 5]
+n = len(a) 
+print ("The product array is: ")
+productPuzzle(a, n) 
   
+----------------------------------------------------------------------------------------------------
+
+Use property of log to multiply large numbers
+x = a * b * c * d
+log(x) = log(a * b * c * d)
+log(x) = log(a) + log(b) + log(c) + log(d)
+x = antilog(log(a) + log(b) + log(c) + log(d))
+
+import math
+
+EPS = 1e-9
+def productPuzzle(arr,n):
+    
+    sum=0
+    for i in range(n):
+        sum+=math.log10(arr[i])
+        
+    
+    for i in range(n):
+        print(int((EPS + pow(10.00, sum - math.log10(a[i]))))), 
+        
+a = [1, 2, 3, 4, 5]
+n = len(a) 
+print ("The product array is: ")
+productPuzzle(a, n) 
