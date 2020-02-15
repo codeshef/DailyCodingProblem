@@ -1,0 +1,71 @@
+
+
+Problem Statement
+
+Given the root to a binary tree, implement serialize(root), which serializes the tree into a string, and deserialize(s), which deserializes the string back into the tree.
+
+For example, given the following Node class
+
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+The following test should pass:
+
+node = Node('root', Node('left', Node('left.left')), Node('right'))
+assert deserialize(serialize(node)).left.left.val == 'left.left'
+
+Approach
+
+So we have a problem to convert a Node to string and from that string to Node back, this problem can have multiple solutions available.
+Solution #1
+
+    The first solution can have that we can any two of pre, post and in order and then combine those
+    you can now get two string back from your own combining method and reconstruct the tree
+
+Solution #2
+
+If you look problem or how you are creating Node, you can use root, left and right and combine then after getting string version of left and right using the recursive method, you can combine using your method like list, JSON and can convert from those to string and string to back into list or JSON.
+
+My provider is based on Solution #2 and using list, I have used json.dumps() to convert the string from List and json.loads() to convert to List from string.
+
+---------------------------------------------------------------------------------------------
+import json
+
+
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.value = val
+        self.left = left
+        self.right = right
+
+def serialize(root):
+    def _serialize(root):
+        serialize_arr = []
+        if root.value:
+            serialize_arr.append(root.value)
+        if root.left:
+            serialize_arr.append(_serialize(root.left))
+        else:
+            serialize_arr.append(None)
+        if root.right:
+            serialize_arr.append(_serialize(root.right))
+        else:
+            serialize_arr.append(None)
+        return serialize_arr
+    return json.dumps(_serialize(root))
+
+def deserialize(string):
+    if string == None:
+        return None
+    node_list = json.loads(string) if type(string) == str else string
+    root = Node(node_list[0], deserialize(
+        node_list[1]), deserialize(node_list[2]))
+    return root
+
+# Code testing
+node = Node('root', Node('left', Node('left.left')), Node('right'))
+
+assert deserialize(serialize(node)).left.left.value == 'left.left'
